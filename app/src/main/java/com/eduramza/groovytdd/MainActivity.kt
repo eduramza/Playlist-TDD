@@ -2,6 +2,7 @@ package com.eduramza.groovytdd
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.eduramza.groovytdd.playlist.ui.PlaylistFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

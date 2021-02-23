@@ -1,7 +1,8 @@
-package com.eduramza.groovytdd
+package com.eduramza.groovytdd.playlist.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.eduramza.groovytdd.playlist.repository.PlaylistRepository
 
 class PlaylistViewModelFactory(
         private val repository: PlaylistRepository

@@ -1,5 +1,6 @@
-package com.eduramza.groovytdd
+package com.eduramza.groovytdd.playlist.repository
 
+import com.eduramza.groovytdd.Playlist
 import kotlinx.coroutines.flow.Flow
 
 class PlaylistRepository {

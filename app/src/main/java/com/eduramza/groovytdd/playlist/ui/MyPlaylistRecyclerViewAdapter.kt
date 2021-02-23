@@ -1,4 +1,4 @@
-package com.eduramza.groovytdd
+package com.eduramza.groovytdd.playlist.ui
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.eduramza.groovytdd.Playlist
+import com.eduramza.groovytdd.R
 
 class MyPlaylistRecyclerViewAdapter(
     private val values: List<Playlist>

@@ -1,4 +1,4 @@
-package com.eduramza.groovytdd
+package com.eduramza.groovytdd.playlist.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +9,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.eduramza.groovytdd.*
+import com.eduramza.groovytdd.playlist.repository.PlaylistRepository
+import com.eduramza.groovytdd.playlist.viewmodel.PlaylistViewModel
+import com.eduramza.groovytdd.playlist.viewmodel.PlaylistViewModelFactory
 
 class PlaylistFragment : Fragment() {
 
