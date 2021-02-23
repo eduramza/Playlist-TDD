@@ -5,6 +5,9 @@ import com.eduramza.groovytdd.utils.MainCoroutineScopeRule
 import com.eduramza.groovytdd.utils.getValueForTest
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -18,16 +21,45 @@ class PlaylistViewModelTest {
     @get:Rule
     val instantTestExecutorRule = InstantTaskExecutorRule()
 
-    val viewModel: PlaylistViewModel
-    val repository: PlaylistRepository = mock()
+    //private val viewModel: PlaylistViewModel
+    private val repository: PlaylistRepository = mock()
+    private val playlists = mock<List<Playlist>>()
+    private val expected = Result.success(playlists)
 
     init {
-        viewModel = PlaylistViewModel()
+        runBlockingTest {
+
+        }
+
+
     }
+
     @Test
-    fun getPlaylistFromRepository() {
+    fun getPlaylistFromRepository() = runBlockingTest {
+
+        whenever(repository.getPlaylists()).thenReturn(
+                flow {
+                    emit(expected)
+                }
+        )
+
+        val viewModel = PlaylistViewModel(repository)
+
         viewModel.playlists.getValueForTest()
 
         verify(repository).getPlaylists()
+    }
+
+    @Test
+    fun emitsPlaylistFromRepository() = runBlockingTest {
+        whenever(repository.getPlaylists()).thenReturn(
+                flow {
+                    emit(expected)
+                }
+        )
+
+        val viewModel = PlaylistViewModel(repository)
+
+        assertEquals(expected, viewModel.playlists.getValueForTest())
     }
 }
