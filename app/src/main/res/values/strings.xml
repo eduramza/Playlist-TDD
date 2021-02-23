@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Groovy TDD</string>
+    <string name="playlist_title">Playlist</string>
+</resources>
