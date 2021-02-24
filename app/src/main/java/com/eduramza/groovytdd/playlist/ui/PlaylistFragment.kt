@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eduramza.groovytdd.*
+import com.eduramza.groovytdd.playlist.PlaylistService
 import com.eduramza.groovytdd.playlist.repository.PlaylistRepository
 import com.eduramza.groovytdd.playlist.viewmodel.PlaylistViewModel
 import com.eduramza.groovytdd.playlist.viewmodel.PlaylistViewModelFactory
@@ -18,7 +19,9 @@ class PlaylistFragment : Fragment() {
 
     lateinit var viewModel: PlaylistViewModel
     lateinit var viewModelFactory: PlaylistViewModelFactory
-    private val repository = PlaylistRepository()
+
+    private val service = PlaylistService()
+    private val repository = PlaylistRepository(service)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

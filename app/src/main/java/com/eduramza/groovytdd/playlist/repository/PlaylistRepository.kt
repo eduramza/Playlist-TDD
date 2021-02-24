@@ -1,11 +1,9 @@
 package com.eduramza.groovytdd.playlist.repository
 
-import com.eduramza.groovytdd.Playlist
-import kotlinx.coroutines.flow.Flow
+import com.eduramza.groovytdd.playlist.PlaylistService
 
-class PlaylistRepository {
-    suspend fun getPlaylists(): Flow<Result<List<Playlist>>> {
-        TODO("Not yet implemented")
-    }
+class PlaylistRepository(private val service: PlaylistService) {
+
+    suspend fun getPlaylists() = service.fetchPlaylists()
 
 }
