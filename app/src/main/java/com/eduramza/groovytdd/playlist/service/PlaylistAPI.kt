@@ -1,12 +1,11 @@
 package com.eduramza.groovytdd.playlist.service
 
 import com.eduramza.groovytdd.Playlist
-import kotlinx.coroutines.flow.Flow
+import retrofit2.http.GET
 
 interface PlaylistAPI {
 
-    suspend fun fetchAllPlaylists() : List<Playlist> {
-        TODO("Not yet implemented")
-    }
+    @GET("/playlists")
+    fun fetchAllPlaylists() : List<Playlist>
 
 }
