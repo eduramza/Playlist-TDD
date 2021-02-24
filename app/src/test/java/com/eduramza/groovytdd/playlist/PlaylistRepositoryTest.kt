@@ -2,6 +2,7 @@ package com.eduramza.groovytdd.playlist
 
 import com.eduramza.groovytdd.Playlist
 import com.eduramza.groovytdd.playlist.repository.PlaylistRepository
+import com.eduramza.groovytdd.playlist.service.PlaylistService
 import com.eduramza.groovytdd.utils.BaseUnitTest
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify

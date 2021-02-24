@@ -1,6 +1,6 @@
 package com.eduramza.groovytdd.playlist.repository
 
-import com.eduramza.groovytdd.playlist.PlaylistService
+import com.eduramza.groovytdd.playlist.service.PlaylistService
 
 class PlaylistRepository(private val service: PlaylistService) {
 
