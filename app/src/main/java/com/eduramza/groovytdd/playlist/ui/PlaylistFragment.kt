@@ -4,21 +4,18 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eduramza.groovytdd.*
-import com.eduramza.groovytdd.playlist.service.PlaylistService
-import com.eduramza.groovytdd.playlist.repository.PlaylistRepository
-import com.eduramza.groovytdd.playlist.service.PlaylistAPI
 import com.eduramza.groovytdd.playlist.viewmodel.PlaylistViewModel
 import com.eduramza.groovytdd.playlist.viewmodel.PlaylistViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,6 +24,8 @@ class PlaylistFragment : Fragment() {
     lateinit var viewModel: PlaylistViewModel
     @Inject
     lateinit var viewModelFactory: PlaylistViewModelFactory
+    private lateinit var progress: ProgressBar
+    private lateinit var rvPlaylist: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,11 +33,22 @@ class PlaylistFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
 
+        progress = view.findViewById(R.id.progress)
+        rvPlaylist = view.findViewById(R.id.rv_playlist)
+
         setupViewModel()
+
+        viewModel.loading.observe(this as LifecycleOwner, { loading ->
+            when(loading){
+                true -> progress.visibility = VISIBLE
+                else -> progress.visibility = GONE
+            }
+
+        })
 
         viewModel.playlists.observe(this as LifecycleOwner, {playlist ->
             if (playlist.getOrNull() != null){
-                setupList(view, playlist.getOrNull()!!)
+                setupList(rvPlaylist, playlist.getOrNull()!!)
             } else {
                 //TODO
             }
@@ -54,7 +64,6 @@ class PlaylistFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
 
             adapter = MyPlaylistRecyclerViewAdapter(playlist)
-            this.adapter = adapter
         }
     }
 
