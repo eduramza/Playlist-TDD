@@ -5,7 +5,7 @@ import retrofit2.http.GET
 
 interface PlaylistAPI {
 
-    @GET("/playlists")
+    @GET("playlists")
     fun fetchAllPlaylists() : List<Playlist>
 
 }

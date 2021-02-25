@@ -14,12 +14,4 @@ class PlaylistViewModel(
     val playlists: LiveData<Result<List<Playlist>>>
         get() = _playlists
 
-//    init {
-//        viewModelScope.launch {
-//            repository.getPlaylists()
-//                    .collect {
-//                        _playlists.value = it
-//                    }
-//        }
-//    }
 }
