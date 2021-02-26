@@ -7,6 +7,7 @@ import com.eduramza.groovytdd.utils.BaseUnitTest
 import com.eduramza.groovytdd.utils.captureValues
 import com.eduramza.groovytdd.utils.getValueForTest
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.flow.flow
@@ -22,35 +23,37 @@ class PlaylistViewModelTest : BaseUnitTest() {
     private val repository: PlaylistRepository = mock()
     private val playlists = mock<List<Playlist>>()
     private val expected = Result.success(playlists)
-    private val exception = RuntimeException("Test Exception")
+    private val exception = RuntimeException("Something went wrong")
 
     @Test
-    fun getPlaylistFromRepository() = runBlockingTest {
+    fun getPlaylistsFromRepository() = runBlockingTest {
         val viewModel = mockSuccessfulCase()
 
         viewModel.playlists.getValueForTest()
 
-        verify(repository).getPlaylists()
+        verify(repository, times(1)).getPlaylists()
     }
 
     @Test
-    fun emitsPlaylistFromRepository() = runBlockingTest {
+    fun emitsPlaylistsFromRepository() = runBlockingTest {
         val viewModel = mockSuccessfulCase()
 
         assertEquals(expected, viewModel.playlists.getValueForTest())
     }
 
     @Test
-    fun emitErrorWhenRepositoryResponseAreFailure() = runBlockingTest {
+    fun emitErrorWhenReceiveError() {
         val viewModel = mockErrorCase()
-        assertEquals(exception, viewModel.playlists.getValueForTest()?.exceptionOrNull())
+
+        assertEquals(exception, viewModel.playlists.getValueForTest()!!.exceptionOrNull())
     }
 
+
     @Test
-    fun showProgressBarWhileLoading() = runBlockingTest {
+    fun showSpinnerWhileLoading() = runBlockingTest {
         val viewModel = mockSuccessfulCase()
 
-        viewModel.loading.captureValues{
+        viewModel.loader.captureValues {
             viewModel.playlists.getValueForTest()
 
             assertEquals(true, values[0])
@@ -58,10 +61,10 @@ class PlaylistViewModelTest : BaseUnitTest() {
     }
 
     @Test
-    fun closeProgressAfterPlaylistLoad() = runBlockingTest {
+    fun closeLoaderAfterPlaylistsLoad() = runBlockingTest {
         val viewModel = mockSuccessfulCase()
 
-        viewModel.loading.captureValues {
+        viewModel.loader.captureValues {
             viewModel.playlists.getValueForTest()
 
             assertEquals(false, values.last())
@@ -69,37 +72,38 @@ class PlaylistViewModelTest : BaseUnitTest() {
     }
 
     @Test
-    fun closeProgressAfterError() = runBlockingTest {
+    fun closeLoaderAfterError() = runBlockingTest {
         val viewModel = mockErrorCase()
 
-        viewModel.loading.captureValues {
+        viewModel.loader.captureValues {
             viewModel.playlists.getValueForTest()
 
             assertEquals(false, values.last())
         }
     }
 
+
     private fun mockSuccessfulCase(): PlaylistViewModel {
         runBlocking {
             whenever(repository.getPlaylists()).thenReturn(
-                    flow {
-                        emit(expected)
-                    }
+                flow {
+                    emit(expected)
+                }
             )
         }
 
         return PlaylistViewModel(repository)
     }
 
-    private suspend fun mockErrorCase(): PlaylistViewModel {
-        whenever(repository.getPlaylists()).thenReturn(
-            flow {
-                emit(Result.failure<List<Playlist>>(exception))
-            }
-        )
-
-        val viewModel = PlaylistViewModel(repository)
-        return viewModel
+    private fun mockErrorCase(): PlaylistViewModel {
+        runBlocking {
+            whenever(repository.getPlaylists()).thenReturn(
+                flow {
+                    emit(Result.failure<List<Playlist>>(exception))
+                }
+            )
+        }
+        return PlaylistViewModel(repository)
     }
 
 }

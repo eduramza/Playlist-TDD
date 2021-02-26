@@ -8,6 +8,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,48 +23,49 @@ import javax.inject.Inject
 class PlaylistFragment : Fragment() {
 
     lateinit var viewModel: PlaylistViewModel
-    @Inject
-    lateinit var viewModelFactory: PlaylistViewModelFactory
     private lateinit var progress: ProgressBar
     private lateinit var rvPlaylist: RecyclerView
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+    @Inject
+    lateinit var viewModelFactory: PlaylistViewModelFactory
 
-        progress = view.findViewById(R.id.progress)
-        rvPlaylist = view.findViewById(R.id.rv_playlist)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_playlist, container, false)
+
+        progress = view.findViewById(R.id.loader)
+        rvPlaylist = view.findViewById(R.id.playlists_list)
 
         setupViewModel()
 
-        viewModel.loading.observe(this as LifecycleOwner, { loading ->
-            when(loading){
-                true -> progress.visibility = VISIBLE
-                else -> progress.visibility = GONE
+        viewModel.loader.observe(this as LifecycleOwner, { loading ->
+            when(loading) {
+                true -> progress.visibility = View.VISIBLE
+                else -> progress.visibility = View.GONE
             }
-
         })
 
-        viewModel.playlists.observe(this as LifecycleOwner, {playlist ->
-            if (playlist.getOrNull() != null){
-                setupList(rvPlaylist, playlist.getOrNull()!!)
-            } else {
+        viewModel.playlists.observe(this as LifecycleOwner, { playlists ->
+            if(playlists.getOrNull() !=null)
+                setupList(rvPlaylist, playlists.getOrNull()!!)
+            else {
                 //TODO
             }
         })
+
         return view
     }
 
+
+
     private fun setupList(
         view: View?,
-        playlist: List<Playlist>
+        playlists: List<Playlist>
     ) {
         with(view as RecyclerView) {
             layoutManager = LinearLayoutManager(context)
 
-            adapter = MyPlaylistRecyclerViewAdapter(playlist)
+            adapter = MyPlaylistRecyclerViewAdapter(playlists)
         }
     }
 
@@ -74,6 +76,7 @@ class PlaylistFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance() = PlaylistFragment().apply {}
+        fun newInstance() =
+            PlaylistFragment().apply {}
     }
 }

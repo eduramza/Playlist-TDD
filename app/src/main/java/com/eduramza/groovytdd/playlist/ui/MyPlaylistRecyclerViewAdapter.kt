@@ -10,28 +10,28 @@ import com.eduramza.groovytdd.Playlist
 import com.eduramza.groovytdd.R
 
 class MyPlaylistRecyclerViewAdapter(
-    private val values: List<Playlist>
-) : RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder>() {
+    private val values: List<Playlist>)
+    : RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_item, parent, false)
+            .inflate(R.layout.playlists_item, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
 
-        holder.name.text = item.name
-        holder.category.text = item.category
-        holder.logo.setImageResource(R.mipmap.playlist)
+        holder.playlistName.text = item.name
+        holder.playlistCategory.text = item.category
+        holder.playlistImage.setImageResource(item.image)
     }
 
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val name: TextView = view.findViewById(R.id.tv_name)
-        val category: TextView = view.findViewById(R.id.tv_category)
-        val logo: ImageView = view.findViewById(R.id.img_playlist)
+        val playlistName: TextView = view.findViewById(R.id.playlist_name)
+        val playlistCategory: TextView = view.findViewById(R.id.playlist_category)
+        val playlistImage: ImageView = view.findViewById(R.id.playlist_image)
     }
 }

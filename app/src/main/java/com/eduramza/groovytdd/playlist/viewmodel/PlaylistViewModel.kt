@@ -6,18 +6,19 @@ import com.eduramza.groovytdd.playlist.repository.PlaylistRepository
 import kotlinx.coroutines.flow.onEach
 
 class PlaylistViewModel(
-        private val repository: PlaylistRepository
-): ViewModel() {
+    private val repository: PlaylistRepository
+) : ViewModel() {
 
-    private val _playlists = liveData{
-        loading.postValue(true)
+    val loader = MutableLiveData<Boolean>()
+
+    val playlists = liveData {
+        loader.postValue(true)
+
         emitSource(repository.getPlaylists()
-            .onEach { loading.postValue(false) }
+            .onEach {
+                loader.postValue(false)
+            }
             .asLiveData())
     }
-    val playlists: LiveData<Result<List<Playlist>>>
-        get() = _playlists
-
-    val loading = MutableLiveData<Boolean>()
 
 }

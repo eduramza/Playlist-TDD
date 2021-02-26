@@ -1,6 +1,6 @@
 package com.eduramza.groovytdd.playlist
 
-import com.eduramza.groovytdd.Playlist
+import com.eduramza.groovytdd.playlist.mapper.PlaylistRaw
 import com.eduramza.groovytdd.playlist.service.PlaylistAPI
 import com.eduramza.groovytdd.playlist.service.PlaylistService
 import com.eduramza.groovytdd.utils.BaseUnitTest
@@ -9,6 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.whenever
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.flow.first
@@ -19,34 +20,36 @@ class PlaylistServiceTest: BaseUnitTest() {
 
     private lateinit var service: PlaylistService
     private val api: PlaylistAPI = mock()
-    private val playlists: List<Playlist> = mock()
+    private val playlists: List<PlaylistRaw> = mock()
 
     @Test
-    fun fetchPlaylistFromAPI() = runBlockingTest {
+    fun fetchPlaylistsFromAPI() = runBlockingTest {
         service = PlaylistService(api)
 
         service.fetchPlaylists().first()
 
-        verify(api).fetchAllPlaylists()
+        verify(api, times(1)).fetchAllPlaylists()
     }
 
     @Test
-    fun convertValueAsFlowAndEmiteThem() = runBlockingTest {
+    fun convertValuesToFlowResultAndEmitsThem() = runBlockingTest {
         mockSuccessfulCase()
 
         assertEquals(Result.success(playlists), service.fetchPlaylists().first())
     }
 
     @Test
-    fun emitErrorsResultWhenNetworkFailed() = runBlockingTest {
-        mockFailureCase()
+    fun emitsErrorResultWhenNetworkFails() = runBlockingTest {
+        mockErrorCase()
 
         assertEquals("Something went wrong",
-                service.fetchPlaylists().first().exceptionOrNull()?.message)
+            service.fetchPlaylists().first().exceptionOrNull()?.message)
     }
 
-    private suspend fun mockFailureCase() {
-        whenever(api.fetchAllPlaylists()).thenThrow(RuntimeException("From brackend Exception"))
+
+
+    private suspend fun mockErrorCase() {
+        whenever(api.fetchAllPlaylists()).thenThrow(RuntimeException("Damn backend developers"))
 
         service = PlaylistService(api)
     }
