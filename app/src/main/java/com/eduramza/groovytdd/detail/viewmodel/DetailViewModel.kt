@@ -1,10 +1,20 @@
 package com.eduramza.groovytdd.detail.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.eduramza.groovytdd.detail.model.Music
+import com.eduramza.groovytdd.detail.repository.DetailRepository
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-class DetailViewModel: ViewModel() {
+class DetailViewModel(
+    private val repository: DetailRepository
+    ): ViewModel() {
 
-    val detail = MutableLiveData<Music>()
+    private val _detail = liveData {
+        emitSource(repository.fetchMusic().asLiveData())
+    }
+
+    val detail: LiveData<Result<Music>>
+        get() = _detail
+
 }

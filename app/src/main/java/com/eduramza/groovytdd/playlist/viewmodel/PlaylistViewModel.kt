@@ -1,7 +1,6 @@
 package com.eduramza.groovytdd.playlist.viewmodel
 
 import androidx.lifecycle.*
-import com.eduramza.groovytdd.Playlist
 import com.eduramza.groovytdd.playlist.repository.PlaylistRepository
 import kotlinx.coroutines.flow.onEach
 
