@@ -11,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eduramza.groovytdd.*
@@ -65,7 +66,11 @@ class PlaylistFragment : Fragment() {
         with(view as RecyclerView) {
             layoutManager = LinearLayoutManager(context)
 
-            adapter = MyPlaylistRecyclerViewAdapter(playlists)
+            adapter = MyPlaylistRecyclerViewAdapter(playlists) { id ->
+                val action = PlaylistFragmentDirections.actionPlaylistFragmentToDetailFragment(id)
+
+                findNavController().navigate(action)
+            }
         }
     }
 
