@@ -21,7 +21,4 @@ class PlaylistService @Inject constructor(
         }
     }
 
-    fun fetchMusic() : Flow<Result<Music>>{
-        TODO("Not yet implemented")
-    }
 }

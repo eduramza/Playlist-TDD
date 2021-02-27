@@ -9,7 +9,7 @@ class DetailViewModel(
     ): ViewModel() {
 
     private val _detail = liveData {
-        emitSource(repository.getMusic().asLiveData())
+        emitSource(repository.getMusic("1").asLiveData())
     }
 
     val detail: LiveData<Result<Music>>

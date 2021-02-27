@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyString
 import java.lang.RuntimeException
 
 class DetailViewModelTest: BaseUnitTest() {
@@ -28,7 +29,7 @@ class DetailViewModelTest: BaseUnitTest() {
 
         viewModel.detail.getValueForTest()
 
-        verify(detailRepository).getMusic()
+        verify(detailRepository).getMusic(anyString())
     }
 
     @Test
@@ -48,7 +49,7 @@ class DetailViewModelTest: BaseUnitTest() {
 
     private fun mockFailureResponse(): DetailViewModel {
         runBlocking {
-            whenever(detailRepository.getMusic()).thenReturn(
+            whenever(detailRepository.getMusic(anyString())).thenReturn(
                 flow {
                     emit(Result.failure<Music>(exception))
                 }
@@ -60,7 +61,7 @@ class DetailViewModelTest: BaseUnitTest() {
 
     private fun mockSuccessDetails(): DetailViewModel {
         runBlocking {
-            whenever(detailRepository.getMusic()).thenReturn(flow {
+            whenever(detailRepository.getMusic(anyString())).thenReturn(flow {
                 emit(expected)
             })
         }
