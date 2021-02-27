@@ -24,7 +24,7 @@ class PlaylistFeature : BaseUITest(){
 
     @Test
     fun displayScreenTitle() {
-        assertDisplayed("Playlists")
+        assertDisplayed("Playlist")
     }
 
 
