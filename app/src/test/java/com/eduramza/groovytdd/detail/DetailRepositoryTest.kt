@@ -13,12 +13,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
+import java.lang.RuntimeException
 
 @ExperimentalCoroutinesApi
 class DetailRepositoryTest: BaseUnitTest() {
 
     private val successResponse = mock<Music>()
     private val service: PlaylistService = mock()
+    val exception = RuntimeException("Has an error with Backend call")
 
     @Test
     fun getPlaylistFromService() = runBlockingTest {
@@ -38,6 +40,18 @@ class DetailRepositoryTest: BaseUnitTest() {
         repository.getMusic()
 
         assertEquals(successResponse, repository.getMusic().first().getOrNull())
+    }
+
+    @Test
+    fun returnErroWithBackendRequestFailure() = runBlockingTest {
+        whenever(service.fetchMusic()).thenReturn(
+            flow {
+                emit(Result.failure<Music>(exception))
+            }
+        )
+        val repository = DetailRepository(service)
+
+        assertEquals(exception, repository.getMusic().first().exceptionOrNull())
     }
 
     private fun mockSuccessfulCase(): DetailRepository {
