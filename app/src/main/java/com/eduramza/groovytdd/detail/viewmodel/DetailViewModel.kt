@@ -3,15 +3,13 @@ package com.eduramza.groovytdd.detail.viewmodel
 import androidx.lifecycle.*
 import com.eduramza.groovytdd.detail.model.Music
 import com.eduramza.groovytdd.detail.repository.DetailRepository
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class DetailViewModel(
     private val repository: DetailRepository
     ): ViewModel() {
 
     private val _detail = liveData {
-        emitSource(repository.fetchMusic().asLiveData())
+        emitSource(repository.getMusic().asLiveData())
     }
 
     val detail: LiveData<Result<Music>>

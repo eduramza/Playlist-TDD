@@ -1,6 +1,7 @@
 package com.eduramza.groovytdd.playlist.service
 
 import com.eduramza.groovytdd.Playlist
+import com.eduramza.groovytdd.detail.model.Music
 import com.eduramza.groovytdd.playlist.mapper.PlaylistRaw
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -18,5 +19,9 @@ class PlaylistService @Inject constructor(
         }.catch {
             emit(Result.failure(RuntimeException("Something went wrong")))
         }
+    }
+
+    fun fetchMusic() : Flow<Result<Music>>{
+        TODO("Not yet implemented")
     }
 }

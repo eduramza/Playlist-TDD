@@ -15,7 +15,7 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 import java.lang.RuntimeException
 
-class PlaylistViewModelTest: BaseUnitTest() {
+class DetailViewModelTest: BaseUnitTest() {
 
     private val detailRepository: DetailRepository = mock()
     private val mockMusic = mock<Music>()
@@ -28,7 +28,7 @@ class PlaylistViewModelTest: BaseUnitTest() {
 
         viewModel.detail.getValueForTest()
 
-        verify(detailRepository).fetchMusic()
+        verify(detailRepository).getMusic()
     }
 
     @Test
@@ -48,7 +48,7 @@ class PlaylistViewModelTest: BaseUnitTest() {
 
     private fun mockFailureResponse(): DetailViewModel {
         runBlocking {
-            whenever(detailRepository.fetchMusic()).thenReturn(
+            whenever(detailRepository.getMusic()).thenReturn(
                 flow {
                     emit(Result.failure<Music>(exception))
                 }
@@ -60,7 +60,7 @@ class PlaylistViewModelTest: BaseUnitTest() {
 
     private fun mockSuccessDetails(): DetailViewModel {
         runBlocking {
-            whenever(detailRepository.fetchMusic()).thenReturn(flow {
+            whenever(detailRepository.getMusic()).thenReturn(flow {
                 emit(expected)
             })
         }
