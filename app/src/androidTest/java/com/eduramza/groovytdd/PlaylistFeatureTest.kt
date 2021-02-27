@@ -2,6 +2,7 @@ package com.eduramza.groovytdd
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.rule.ActivityTestRule
@@ -66,5 +67,13 @@ class PlaylistFeature : BaseUITest(){
         onView(allOf(withId(R.id.playlist_image), isDescendantOfA(nthChildOf(withId(R.id.playlists_list), 3))))
             .check(matches(withDrawable(R.mipmap.rock)))
             .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun navigateToDetailScreen(){
+        onView(allOf(withId(R.id.playlist_image), isDescendantOfA(nthChildOf(withId(R.id.playlists_list), 0))))
+            .perform(click())
+
+        assertDisplayed(R.id.playlist_detail_root)
     }
 }
