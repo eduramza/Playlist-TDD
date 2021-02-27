@@ -17,15 +17,17 @@ class PlaylistDetailFeature: BaseUITest() {
 
     @Test
     fun displayPlaylistNameAndDetails(){
+
         onView(allOf(withId(R.id.playlist_image),
                 isDescendantOfA(nthChildOf(withId(R.id.playlists_list), 0))))
             .perform(click())
+
+        Thread.sleep(3000)
 
         onView(allOf(withId(R.id.tv_detail_name)))
             .check(matches(withText("Hard Rock Cafe")))
             .check(matches(isDisplayed()))
         onView(allOf(withId(R.id.tv_details_details)))
-            .check(matches(withText("Rock your senses with this timeless signature vibe list. \\n\\n • Poison \\n • You shook me all night \\n • Zombie \\n • Rock'n Me \\n • Thunderstruck \\n • I Hate Myself for Loving you \\n • Crazy \\n • Knockin' on Heavens Door")))
             .check(matches(isDisplayed()))
     }
 }

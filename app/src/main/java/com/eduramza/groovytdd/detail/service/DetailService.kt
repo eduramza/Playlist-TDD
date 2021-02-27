@@ -1,5 +1,6 @@
 package com.eduramza.groovytdd.detail.service
 
+import android.util.Log
 import com.eduramza.groovytdd.BackendException
 import com.eduramza.groovytdd.detail.model.Music
 import com.eduramza.groovytdd.playlist.service.PlaylistAPI
